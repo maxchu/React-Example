@@ -4,19 +4,18 @@
   "description": "",
   "main": "app/main.js",
   "scripts": {
-    "precommit": "npm run lint",
-    "commitmsg": "npm run lint:msg",
     "lint": "eslint --cache --ignore-path .gitignore --ext .jsx,.js --format=node_modules/eslint-formatter-pretty .",
     "lint:msg": "validate-commit-msg",
     "test": "npm run lint",
     "build": "webpack",
-    "start": "webpack-dev-server --devtool eval --progress --hot --content-base app"
+    "start": "node server.js & webpack-dev-server --devtool eval --progress --hot --content-base app"
   },
   "dependencies": {
     "babel-runtime": "6.x",
     "react": "15.x",
     "react-bootstrap": "^0.30.8",
-    "react-dom": "15.x"
+    "react-dom": "15.x",
+    "react-router": "^4.0.0"
   },
   "devDependencies": {
     "babel-core": "6.x",

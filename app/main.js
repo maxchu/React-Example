@@ -1,21 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Router, Route} from 'react-router';
 
 import ProductContent from './components/ProductContent';
 import Navigator from './components/Navigator';
-import myContent from './content.json'; //@TODO move the content to server side 
+import * as contentService from './services/content-service';
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      title: '',
       content: {},
       page: 0,
       total: 0,
-      nextSubTitle: ''
+      nextTitle: '',
     };
-    this.title = myContent.title;
   }
 
   componentDidMount() {
@@ -24,33 +25,37 @@ class App extends React.Component {
 
   getContent() {
     // initialise
-    this.setState({
-      content: myContent.content[0],
-      page: 0,
-      total: myContent.content.length,
-      nextSubTitle: myContent.content[1].title
+    contentService.getJSON()
+      .then(data => {
+        this.setState({
+          data: data,
+          title: data.title,
+          content: data.content[0],
+          total: data.content.length,
+          nextTitle: data.content[1].title
+        });
     });
   }
 
   nextPageHandler() {
     let p = this.state.page + 1;
-    let nextSt = myContent.content[p + 1] !== undefined ? myContent.content[p + 1].title : '';
-    this.setState({ content: myContent.content[p], page: p, nextSubTitle: nextSt });
+    let nextTxt = this.state.data.content[p + 1] !== undefined ? this.state.data.content[p + 1].title : '';
+    this.setState({ content: this.state.data.content[p], page: p, nextTitle: nextTxt });
   }
 
   prevPageHandler() {
     let p = this.state.page - 1;
-    let nextSt = myContent.content[p + 1] !== undefined ? myContent.content[p + 1].title : '';
-    this.setState({ content: myContent.content[p], page: p, nextSubTitle: nextSt });
+    let nextTxt = this.state.data.content[p + 1] !== undefined ? this.state.data.content[p + 1].title : '';
+    this.setState({ content: this.state.data.content[p], page: p, nextTitle: nextTxt });
   }
 
   render() {
     // render product page
     return (
       <div className="container product-intro">
-        <h1>{this.title}</h1>
+        <h1>{this.state.title}</h1>
         <ProductContent content={this.state.content}/>
-        <Navigator page={this.state.page} nextSubTitle={this.state.nextSubTitle} total={this.state.total} onPrevious={this.prevPageHandler.bind(this)} onNext={this.nextPageHandler.bind(this)}/>
+        <Navigator page={this.state.page} nextTitle={this.state.nextTitle} total={this.state.total} onPrevious={this.prevPageHandler.bind(this)} onNext={this.nextPageHandler.bind(this)}/>
       </div>
     );
   }

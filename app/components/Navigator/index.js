@@ -13,7 +13,7 @@ class Navigator extends React.Component {
         </div>
 
         <div className="col-sm-10 col-md-8 col-lg-8 text-right">
-          <a href="#" className={(this.props.page >= (this.props.total - 1) ? 'hidden' : '')} onClick={this.props.onNext}>{this.props.nextSubTitle}</a>
+          <a href="#" className={(this.props.page >= (this.props.total - 1) ? 'hidden' : '')} onClick={this.props.onNext}>{this.props.nextTitle}</a>
           <a href="#" onClick={this.props.onNext}>
             <span data-hidden={(this.props.page >= (this.props.total - 1) ? 'hidden' : '')} className="glyphicon glyphicon-triangle-right"></span>
           </a>
